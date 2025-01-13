@@ -1,0 +1,3 @@
+Numbers
+Integers in Javascript are stored as floating point numbers
+Internally they are as base64(Binary format)

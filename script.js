@@ -251,3 +251,44 @@ btnSort.addEventListener('click', function (e) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
+
+console.log(23===23.0) //true: as numbers in js are stored as floting points
+
+//converting string to number
+console.log(Number('23'))
+console.log(+'23')
+
+
+//parsing - string should begin with numbers otherwise it won't work and these are global functions
+//parseInt: extracts integers from string
+//args: string, base(2, 10) binary or decimal
+//default radix is decimal
+console.log(parseInt('23.4px', 10))
+console.log(parseInt('25px'))
+console.log(parseInt('  25  px  '))
+console.log(parseInt('  p25  px  '))  //NaN
+
+//parseFloat
+console.log(parseFloat('  25.45  px  '))  
+console.log(parseFloat('  10  px  '))  
+console.log(parseFloat('  p25  px  '))  //NaN
+
+//checking for NaN
+console.log(Number.isNaN('23')) //false
+console.log(Number.isNaN(23)) //false
+console.log(Number.isNaN('hello')) //true
+console.log(Number.isNaN(' ')) //false
+
+//checking for number
+console.log(Number.isFinite('sanjay')) //false
+console.log(Number.isFinite(+'20')) //true
+console.log(Number.isFinite(+'20x')) //false
+console.log(Number.isFinite(5)) //true
+
+console.log(Number.isInteger(2.5)) //false
+console.log(Number.isInteger(2.0)) //true
+console.log(Number.isInteger(2)) //true
+console.log(Number.isInteger('hello')) //false
+console.log(Number.isInteger(+'23')) //true
+
+

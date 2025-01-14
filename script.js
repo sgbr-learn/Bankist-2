@@ -252,6 +252,8 @@ btnSort.addEventListener('click', function (e) {
 /////////////////////////////////////////////////
 // LECTURES
 
+/*
+//NUMBERS
 console.log(23===23.0) //true: as numbers in js are stored as floting points
 
 //converting string to number
@@ -292,3 +294,36 @@ console.log(Number.isInteger('hello')) //false
 console.log(Number.isInteger(+'23')) //true
 
 
+//Math and Rounding: type cohersion happends behind the scenes
+
+console.log(Math.sqrt(25))
+//alternative methods
+console.log(25 ** (1/2))
+console.log(8 ** (1/3)) //cube root
+
+//round - rounds off to nearest integer
+console.log(Math.round(23.5))
+console.log(Math.round(23.2))
+//trun - truncates everything after decimal, return interger
+console.log(Math.trunc(23.278787878))
+console.log(Math.trunc(23.89998989))
+//ceil - rounds off to nearest next number
+console.log(Math.ceil(23.2998989))
+console.log(Math.ceil(23.89998989))
+//floor - oppsite of ceil
+console.log(Math.floor(0.99))
+console.log(Math.floor(92.01))
+console.log(Math.floor('23.89998989'))
+
+//constants: find area of circle with radius 15px
+const area = Math.PI * Number.parseInt('15 px') ** 2
+console.log(Math.PI, area)
+
+//function to generate random numbers between 2 numbers
+const randIntegers = (min, max) => {
+ console.log(Math.floor(Math.random()*(max-min)) + min)
+}
+
+randIntegers(10, 20)
+randIntegers(0, 4)
+*/

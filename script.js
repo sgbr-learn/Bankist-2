@@ -208,7 +208,7 @@ btnLoan.addEventListener('click', function (e) {
 
   //Math.floor() to round off
   //const amount = Number(inputLoanAmount.value);
-  const amount = Math.floor(inputLoanAmount.value)
+  const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
@@ -328,4 +328,28 @@ const randIntegers = (min, max) => {
 
 randIntegers(10, 20)
 randIntegers(0, 4)
+
+//Remainder operator
+console.log(5 % 2); //1, 5 = 2 * 2 + 1
+console.log(5 / 2);
+
+console.log(6 % 2); //0, 6 = 2 * 3 + 0
+console.log(6 / 2);
+
+//check given number is even
+const isEven = n => n % 2 === 0;
+
+console.log(isEven(2));
+console.log(isEven(5));
+console.log(isEven(53));
+
+//mark the Nth row in different color codes
+
+labelBalance.addEventListener('click', function () {
+  const nodeList = document.querySelectorAll('.movements__row');
+  Array.from(nodeList).forEach((row, i) => {
+    if (i % 2 === 0) row.style.backgroundColor = 'orangered';
+    if (i % 3 === 0) row.style.backgroundColor = 'lightblue';
+  });
+});
 */

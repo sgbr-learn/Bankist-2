@@ -352,4 +352,23 @@ labelBalance.addEventListener('click', function () {
     if (i % 3 === 0) row.style.backgroundColor = 'lightblue';
   });
 });
+
+//Numeric separator (made numbers more readable in code)
+
+//267,480,000,000
+const diameter = 267_480_000_000 //267480000000
+
+//Note: _ must be used between numbers, illegal to use them at the begining or end of the number
+
+const cost = 23_45
+console.log(23_45) //2345
+
+console.log(Number('23_45')) //NaN: deosn't work here
+console.log(parseInt('23_45')) //23
+
+const MYCONSTANT = 123.34_45 //valid
+//test below examples directly in browser console
+// const MYCONSTANT1 = 123._34_45 //invalid
+// const MYCONSTANT2 = _123.34_45 //invalid
+// const MYCONSTANT3 = 123_.34_45 //invalid
 */

@@ -372,3 +372,25 @@ const MYCONSTANT = 123.34_45 //valid
 // const MYCONSTANT2 = _123.34_45 //invalid
 // const MYCONSTANT3 = 123_.34_45 //invalid
 */
+
+//BigInt
+console.log(2 ** 53 - 1)
+console.log(Number.MAX_SAFE_INTEGER)
+
+console.log(2 ** 53 - 1)
+console.log(2 ** 53 + 1)
+console.log(2 ** 53 + 3)
+console.log(2 ** 53 + 5)
+
+//Initilising the BigInts 
+
+console.log(2344244n)
+console.log(BigInt(2332323))
+
+
+//Mix Type error
+const num = 2345
+const bigNum = 237878787n
+
+console.log(num * bigNum)
+//Uncaught TypeError: Cannot mix Biglnt and other types, use explicit conversions

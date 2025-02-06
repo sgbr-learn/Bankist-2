@@ -81,19 +81,44 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const displayMovements = function (movements, sort = false) {
+//Function that displays date in dd/mm/yyyy hh:mm format
+const dateFormat = (inputDate = null) => {
+  const currentTime = inputDate ? new Date(inputDate) : new Date();
+  const min = `${currentTime.getMinutes()}`.padStart(2, '0');
+  const date = `${currentTime.getDate()}`.padStart(2, '0');
+  const month = `${currentTime.getMonth() + 1}`.padStart(2, '0');
+  const year = currentTime.getFullYear();
+  const hour = `${currentTime.getHours()}`.padStart(2, '0');
+
+  return `${date}/${month}/${year} ${hour}:${min}`;
+};
+
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  //combine the movements and movement Dates array into single object to resolve sorting bug.
 
-  movs.forEach(function (mov, i) {
+  const updatedMovementsWithDate = acc.movements.map((mov, i) => {
+    return { mov, movDate: acc.movementsDates[i] };
+  });
+
+  //making changes according to updated object
+  const movs = sort
+    ? updatedMovementsWithDate.slice().sort((a, b) => a.mov - b.mov)
+    : updatedMovementsWithDate;
+
+  //making changes according to updated object
+  movs.forEach(function ({ mov, movDate }, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const displayDate = movDate;
 
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
+    <div class="movements__date">${dateFormat(displayDate)}</div>
         <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
@@ -142,7 +167,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // Display balance
   calcDisplayBalance(acc);
@@ -169,6 +194,7 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
     }`;
+    labelDate.textContent = dateFormat();
     containerApp.style.opacity = 100;
 
     // Clear input fields
@@ -196,7 +222,9 @@ btnTransfer.addEventListener('click', function (e) {
   ) {
     // Doing the transfer
     currentAccount.movements.push(-amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
     receiverAcc.movements.push(amount);
+    receiverAcc.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
@@ -213,6 +241,7 @@ btnLoan.addEventListener('click', function (e) {
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
     currentAccount.movements.push(amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
@@ -246,7 +275,7 @@ btnClose.addEventListener('click', function (e) {
 let sorted = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
@@ -371,7 +400,6 @@ const MYCONSTANT = 123.34_45 //valid
 // const MYCONSTANT1 = 123._34_45 //invalid
 // const MYCONSTANT2 = _123.34_45 //invalid
 // const MYCONSTANT3 = 123_.34_45 //invalid
-*/
 
 //BigInt
 console.log(2 ** 53 - 1)
@@ -394,3 +422,4 @@ const bigNum = 237878787n
 
 console.log(num * bigNum)
 //Uncaught TypeError: Cannot mix Biglnt and other types, use explicit conversions
+*/

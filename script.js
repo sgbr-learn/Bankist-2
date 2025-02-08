@@ -81,28 +81,21 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-//Function that displays date in dd/mm/yyyy hh:mm format
+//Function that displays date in locale format
 
-const dateFormat = (inputDate = null) => {
-  const currentTime = inputDate ? new Date(inputDate) : new Date();
+const dateFormat = (inputDate, locale) => {
 
   const numberOfDays = (date1, date2) => {
     return Math.round((Math.abs(date1 - date2) / (24 * 60 * 60 * 1000)));
   };
 
-  const differenceInDays = numberOfDays(new Date(), currentTime);
+  const differenceInDays = numberOfDays(new Date(), new Date(inputDate));
 
   if (differenceInDays === 0) return 'TODAY';
   if (differenceInDays === 1) return 'YESTERDAY';
   if (differenceInDays <= 7) return `${differenceInDays} DAY'S AGO`;
 
-  const min = `${currentTime.getMinutes()}`.padStart(2, '0');
-  const date = `${currentTime.getDate()}`.padStart(2, '0');
-  const month = `${currentTime.getMonth() + 1}`.padStart(2, '0');
-  const year = currentTime.getFullYear();
-  const hour = `${currentTime.getHours()}`.padStart(2, '0');
-
-  return `${date}/${month}/${year} ${hour}:${min}`;
+  return new Intl.DateTimeFormat(locale).format(new Date(inputDate))
 };
 
 const displayMovements = function (acc, sort = false) {
@@ -123,14 +116,12 @@ const displayMovements = function (acc, sort = false) {
   movs.forEach(function ({ mov, movDate }, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
-    const displayDate = movDate;
-
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-    <div class="movements__date">${dateFormat(displayDate)}</div>
+    <div class="movements__date">${dateFormat(movDate, acc.locale)}</div>
         <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
@@ -206,7 +197,7 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
     }`;
-    labelDate.textContent = dateFormat();
+    labelDate.textContent = new Intl.DateTimeFormat(currentAccount.locale).format();
     containerApp.style.opacity = 100;
 
     // Clear input fields
@@ -434,4 +425,20 @@ const bigNum = 237878787n
 
 console.log(num * bigNum)
 //Uncaught TypeError: Cannot mix Biglnt and other types, use explicit conversions
+
+//Internationalizing dates
+
+const date = new Date() //current date
+
+const options = {
+  hour: '2-digit',
+  minute: '2-digit',
+  day: 'numeric',
+  month: 'long',
+  year : 'numeric',
+  weekday: 'long'
+}
+
+const internationalizedDate = new Intl.DateTimeFormat('kn-IN', options).format(date)
+console.log(internationalizedDate)
 */

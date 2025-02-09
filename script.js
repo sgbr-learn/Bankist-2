@@ -123,7 +123,7 @@ const displayMovements = function (acc, sort = false) {
   movs.forEach(function ({ mov, movDate }, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
-    const formattedMovement = formattedCur(mov, acc.locale, acc.currency)
+    const formattedMovement = formattedCur(mov, acc.locale, acc.currency);
 
     const html = `
       <div class="movements__row">
@@ -141,7 +141,11 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = formattedCur(acc.balance, acc.locale, acc.currency)
+  labelBalance.textContent = formattedCur(
+    acc.balance,
+    acc.locale,
+    acc.currency
+  );
 };
 
 const calcDisplaySummary = function (acc) {
@@ -153,7 +157,11 @@ const calcDisplaySummary = function (acc) {
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = formattedCur(Math.abs(out), acc.locale, acc.currency)
+  labelSumOut.textContent = formattedCur(
+    Math.abs(out),
+    acc.locale,
+    acc.currency
+  );
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -163,7 +171,11 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = formattedCur(interest, acc.locale, acc.currency)
+  labelSumInterest.textContent = formattedCur(
+    interest,
+    acc.locale,
+    acc.currency
+  );
 };
 
 const createUsernames = function (accs) {
@@ -188,9 +200,36 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startLogoutTimer = function () {
+  //set time to 5 minutes (in seconds)
+  let time = 300;
+
+  const tick = function () {
+    let min = String(Math.trunc(time / 60)).padStart(2, 0);
+    let sec = String(time % 60).padStart(2, 0);
+
+    //In each call print the remaining time to UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+    //logout the user and stop timer, when timer reach 0 seconds
+    if (time === 0) {
+      clearInterval(timer);
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Log in to get started';
+    }
+
+    time = time - 1;
+  };
+
+  //call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
+
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, timer;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -221,6 +260,10 @@ btnLogin.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+
+    //Timeout
+    if (timer) clearInterval(timer);
+    timer = startLogoutTimer();
   }
 });
 
@@ -246,6 +289,10 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+
+    //reset time
+    if (timer) clearInterval(timer);
+    timer = startLogoutTimer();
   }
 });
 
@@ -265,6 +312,10 @@ btnLoan.addEventListener('click', function (e) {
     updateUI(currentAccount);
   }
   inputLoanAmount.value = '';
+
+  //reset timer
+  if (timer) clearInterval(timer);
+  timer = startLogoutTimer();
 });
 
 btnClose.addEventListener('click', function (e) {
